@@ -38,17 +38,38 @@ document.addEventListener("DOMContentLoaded", function () {
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
-            ContenedorPokemon.innerHTML = "";
             let Pokemon = document.createElement("section");
+            let movimientos = "";
+            ContenedorPokemon.innerHTML = "";
+
+            /* */
+            console.log("*************************************");
+            console.log(`Pokemon encontrado: ${data.name}`);
+            console.log(`ID correspondiente: ${data.id}`);
+            console.log("*************************************");
+            /* */
+            
+            for (let i = 0; i < data.moves.length; i++) {
+                movimientos += `
+                    <p class="movimientoPokemon">${data.moves[i].move.name}</p>
+                `;
+            }
+            
             Pokemon.innerHTML = `
                 <section class="contenedorImagenesPokemon">
                     <img class="imgPokemonFrente" src="${data.sprites.front_default}" alt="${data.name}">
                     <img class="imgPokemonTrasera" src="${data.sprites.back_default}" alt="${data.name}">
                 </section>
-                <section class="contenedorInfoPokemon">
-                    <h1 class="nombrePokemon">${data.name}</h1>
+                <h1 class="nombrePokemon">${data.name}</h1>
+                <section class="contenedorInfoPokemonFisico">
+                    <p class="numeroPokemon">Num #${data.id}</p>
                     <p class="tipoPokemon">${data.types[0].type.name}</p>
+                    <p class="alturaPokemon">${data.height}cm</p>
+                    <p class="pesoPokemon">${data.weight}kg</p>
+                </section>
+                <h2 class="tituloMovimientos">Posible Movimientos</h2>
+                <section class="contenedorMovimientosPokemon">
+                    ${movimientos}
                 </section>
             `;
             ContenedorPokemon.appendChild(Pokemon);
